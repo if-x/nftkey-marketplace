@@ -1,0 +1,66 @@
+{
+  "name": "nftkey-life",
+  "version": "1.0.0",
+  "description": "NFTKEY Life collection smart contract",
+  "main": "truffle-config.js",
+  "keywords": [],
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "compile": "truffle compile",
+    "compile-ts": "tsc -p ./tsconfig.migrate.json --outDir ./migrations",
+    "etherscan-verify": "truffle run verify Life",
+    "etherscan-verify:bsc": "yarn etherscan-verify --network bsc",
+    "etherscan-verify:bsctestnet": "yarn etherscan-verify --network bsctestnet",
+    "etherscan-verify:main": "yarn etherscan-verify --network main",
+    "etherscan-verify:ropsten": "yarn etherscan-verify --network ropsten",
+    "flatten": "truffle-flattener contracts/Life.sol --output Life_flatten.sol",
+    "generate-types": "typechain --target=truffle-v5 'build/contracts/*.json'",
+    "lint": "eslint --ignore-path .gitignore . --ext ts --ext tsx --ext js --ext jsx",
+    "lint:fix": "npm run lint -- --fix",
+    "migrate": "yarn compile-ts && truffle migrate",
+    "migrate:bsc": "yarn migrate --network bsc",
+    "migrate:bsctestnet": "yarn migrate --network bsctestnet",
+    "migrate:main": "yarn migrate --network main",
+    "migrate:ropsten": "yarn migrate --network ropsten",
+    "postinstall": "yarn compile && yarn generate-types",
+    "prettier": "prettier --write 'contracts/**/*.sol'",
+    "start-server": "node server.js",
+    "test": "yarn compile-ts && truffle test",
+    "test:ropsten": "yarn test --network ropsten"
+  },
+  "author": "If.x",
+  "license": "AGPL-3.0-or-later",
+  "dependencies": {
+    "@openzeppelin/contracts": "3.4.1"
+  },
+  "devDependencies": {
+    "@truffle/hdwallet-provider": "^1.2.3",
+    "@typechain/truffle-v5": "^4.0.1",
+    "@types/chai": "^4.2.15",
+    "@types/mocha": "^8.2.1",
+    "@types/node": "^14.14.35",
+    "@typescript-eslint/eslint-plugin": "^4.18.0",
+    "@typescript-eslint/parser": "^4.18.0",
+    "chai": "^4.3.4",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.22.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "ganache-cli": "^6.12.2",
+    "prettier": "^2.2.1",
+    "prettier-plugin-solidity": "1.0.0-beta.6",
+    "truffle": "^5.2.4",
+    "truffle-flattener": "^1.5.0",
+    "truffle-plugin-verify": "^0.5.7",
+    "ts-node": "^9.1.1",
+    "typechain": "^4.0.3",
+    "typescript": "^4.2.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/if-x/nftkey-life"
+  }
+}
