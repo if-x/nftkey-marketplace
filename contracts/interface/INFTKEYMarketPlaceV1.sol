@@ -7,12 +7,14 @@ interface INFTKEYMarketPlaceV1 {
         uint256 tokenId;
         uint256 bidPrice;
         address bidder;
+        uint256 expireTimestamp;
     }
 
     struct Listing {
         uint256 tokenId;
         uint256 listingPrice;
         address seller;
+        uint256 expireTimestamp;
     }
 
     event TokenListed(
@@ -24,7 +26,6 @@ interface INFTKEYMarketPlaceV1 {
     event TokenDelisted(uint256 indexed tokenId, address indexed fromAddress);
     event TokenBidEntered(uint256 indexed tokenId, uint256 value, address indexed fromAddress);
     event TokenBidWithdrawn(uint256 indexed tokenId, uint256 value, address indexed fromAddress);
-    event TokenBidRemoved(uint256 indexed tokenId, address indexed fromAddress);
     event TokenBought(
         uint256 indexed tokenId,
         uint256 value,
