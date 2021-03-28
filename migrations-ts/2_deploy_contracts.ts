@@ -1,4 +1,6 @@
-const Life = artifacts.require("Life");
+const TestERC20 = artifacts.require("TestERC20");
+const TestERC721 = artifacts.require("TestERC721");
+const NFTKEYMarketPlaceV1 = artifacts.require("NFTKEYMarketPlaceV1");
 
 type Network = "development" | "ropsten" | "main";
 
@@ -8,11 +10,18 @@ module.exports = async (
   // accounts: string[]
 ) => {
   console.log(network);
+  await deployer.deploy(TestERC721);
+  const erc721 = await TestERC721.deployed();
 
-  await deployer.deploy(Life, "Life NFT", "BIO");
+  await deployer.deploy(TestERC20);
+  const erc20 = await TestERC20.deployed();
 
-  const life = await Life.deployed();
-  console.log(`Life NFT deployed at ${life.address} in network: ${network}.`);
+  await deployer.deploy(NFTKEYMarketPlaceV1, erc721.address, erc20.address);
+  const marketplaceV1 = await NFTKEYMarketPlaceV1.deployed();
+
+  console.log(
+    `NFTKEYMarketPlaceV1 deployed at ${marketplaceV1.address} in network: ${network}.`
+  );
 };
 
 export {};

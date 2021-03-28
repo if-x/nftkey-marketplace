@@ -9,9 +9,13 @@ import { IERC721Contract } from "./IERC721";
 import { IERC721EnumerableContract } from "./IERC721Enumerable";
 import { IERC721MetadataContract } from "./IERC721Metadata";
 import { IERC721ReceiverContract } from "./IERC721Receiver";
+import { INFTKEYMarketPlaceV1Contract } from "./INFTKEYMarketPlaceV1";
 import { MigrationsContract } from "./Migrations";
 import { NFTKEYMarketPlaceContract } from "./NFTKEYMarketPlace";
+import { NFTKEYMarketPlaceV1Contract } from "./NFTKEYMarketPlaceV1";
 import { OwnableContract } from "./Ownable";
+import { TestERC20Contract } from "./TestERC20";
+import { TestERC721Contract } from "./TestERC721";
 
 declare global {
   namespace Truffle {
@@ -23,9 +27,13 @@ declare global {
       require(name: "IERC721Enumerable"): IERC721EnumerableContract;
       require(name: "IERC721Metadata"): IERC721MetadataContract;
       require(name: "IERC721Receiver"): IERC721ReceiverContract;
+      require(name: "INFTKEYMarketPlaceV1"): INFTKEYMarketPlaceV1Contract;
       require(name: "Migrations"): MigrationsContract;
       require(name: "NFTKEYMarketPlace"): NFTKEYMarketPlaceContract;
+      require(name: "NFTKEYMarketPlaceV1"): NFTKEYMarketPlaceV1Contract;
       require(name: "Ownable"): OwnableContract;
+      require(name: "TestERC20"): TestERC20Contract;
+      require(name: "TestERC721"): TestERC721Contract;
     }
   }
 }
@@ -46,9 +54,19 @@ export {
   IERC721ReceiverContract,
   IERC721ReceiverInstance,
 } from "./IERC721Receiver";
+export {
+  INFTKEYMarketPlaceV1Contract,
+  INFTKEYMarketPlaceV1Instance,
+} from "./INFTKEYMarketPlaceV1";
 export { MigrationsContract, MigrationsInstance } from "./Migrations";
 export {
   NFTKEYMarketPlaceContract,
   NFTKEYMarketPlaceInstance,
 } from "./NFTKEYMarketPlace";
+export {
+  NFTKEYMarketPlaceV1Contract,
+  NFTKEYMarketPlaceV1Instance,
+} from "./NFTKEYMarketPlaceV1";
 export { OwnableContract, OwnableInstance } from "./Ownable";
+export { TestERC20Contract, TestERC20Instance } from "./TestERC20";
+export { TestERC721Contract, TestERC721Instance } from "./TestERC721";
