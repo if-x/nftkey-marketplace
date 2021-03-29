@@ -27,6 +27,8 @@ export const testAcceptBid = async (accounts: Truffle.Accounts) => {
       from: accounts[1],
     });
 
+    const balanceBefore = await paymentToken.balanceOf(accounts[1]);
+
     const receipt = await marketplaceInstance.acceptBidForToken(
       0,
       highestBid.bidder,
@@ -45,5 +47,10 @@ export const testAcceptBid = async (accounts: Truffle.Accounts) => {
       web3.utils.fromWei(acceptBidLog.args.total),
       web3.utils.fromWei(highestBid.bidPrice)
     );
+
+    const balanceAfter = await paymentToken.balanceOf(accounts[1]);
+
+    console.log("balanceBefore", web3.utils.fromWei(balanceBefore));
+    console.log("balanceAfter", web3.utils.fromWei(balanceAfter));
   });
 };
