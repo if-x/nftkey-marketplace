@@ -13,10 +13,21 @@ module.exports = async (
   await deployer.deploy(TestERC721);
   const erc721 = await TestERC721.deployed();
 
+  console.log(
+    `TestERC721 deployed at ${erc721.address} in network: ${network}.`
+  );
+
   await deployer.deploy(TestERC20);
   const erc20 = await TestERC20.deployed();
 
-  await deployer.deploy(NFTKEYMarketPlaceV1, erc721.address, erc20.address);
+  console.log(`TestERC20 deployed at ${erc20.address} in network: ${network}.`);
+
+  await deployer.deploy(
+    NFTKEYMarketPlaceV1,
+    "Test ERC721",
+    erc721.address,
+    erc20.address
+  );
   const marketplaceV1 = await NFTKEYMarketPlaceV1.deployed();
 
   console.log(

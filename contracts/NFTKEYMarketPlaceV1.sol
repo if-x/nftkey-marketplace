@@ -29,11 +29,17 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
         mapping(address => Bid) bids;
     }
 
-    constructor(address _erc721Address, address _paymentTokenAddress) public {
+    constructor(
+        string memory erc721Name_,
+        address _erc721Address,
+        address _paymentTokenAddress
+    ) public {
+        _erc721Name = erc721Name_;
         _erc721 = IERC721(_erc721Address);
         _paymentToken = IERC20(_paymentTokenAddress);
     }
 
+    string private _erc721Name;
     IERC721 private immutable _erc721;
     IERC20 private immutable _paymentToken;
 
@@ -56,7 +62,7 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
      * This is to help contract migration in case of upgrade or bug
      */
     modifier onlyMarketplaceOpen() {
-        require(!_isListingAndBidEnabled, "Listing and bid are not enabled");
+        require(_isListingAndBidEnabled, "Listing and bid are not enabled");
         _;
     }
 
@@ -91,6 +97,13 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
     }
 
     /**
+     * @dev check if this contract has approved to all of this owner's erc721 tokens
+     */
+    function _isAllTokenApproved(address owner) private view returns (bool) {
+        return _erc721.isApprovedForAll(owner, address(this));
+    }
+
+    /**
      * @dev See {INFTKEYMarketPlaceV1-tokenAddress}.
      */
     function tokenAddress() external view override returns (address) {
@@ -114,7 +127,7 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
     function _isListingValid(Listing memory listing) private view returns (bool) {
         if (
             _isTokenOwner(listing.tokenId, listing.seller) &&
-            _isTokenApproved(listing.tokenId) &&
+            (_isTokenApproved(listing.tokenId) || _isAllTokenApproved(listing.seller)) &&
             listing.listingPrice > 0 &&
             listing.expireTimestamp > block.timestamp
         ) {
@@ -184,7 +197,7 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
     }
 
     /**
-     * @dev See {INFTKEYMarketPlaceV1-getTokenBids}.
+     * @dev See {INFTKEYMarketPlaceV1-getTokenBids}. // TODO length
      */
     function getTokenBids(uint256 tokenId) external view override returns (Bid[] memory) {
         Bid[] memory bids = new Bid[](_tokenBids[tokenId].bidders.length());
@@ -268,7 +281,6 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
 
             // Step 2: if no bid left
             if (_tokenBids[tokenId].bidders.length() == 0) {
-                delete _tokenBids[tokenId];
                 _tokenIdWithBid.remove(tokenId);
             }
         }
@@ -304,7 +316,7 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
         require(value > 0, "Please list for more than 0 or use the transfer function");
         require(_isTokenOwner(tokenId, msg.sender), "Only token owner can list token");
         require(
-            _isTokenApproved(tokenId),
+            _isTokenApproved(tokenId) || _isAllTokenApproved(msg.sender),
             "This token is not allowed to transfer by this contract"
         );
 
@@ -410,12 +422,15 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
      */
     function acceptBidForToken(uint256 tokenId, address bidder) external override nonReentrant {
         require(_isTokenOwner(tokenId, msg.sender), "Only token owner can accept bid of token");
-        require(_isTokenApproved(tokenId), "The token is not approved to transfer by the contract");
+        require(
+            _isTokenApproved(tokenId) || _isAllTokenApproved(msg.sender),
+            "The token is not approved to transfer by the contract"
+        );
 
         Bid memory existingBid = getBidderTokenBid(tokenId, bidder);
         require(
             existingBid.bidPrice > 0 && existingBid.bidder == bidder,
-            "This Bio doesn't have a matching bid"
+            "This token doesn't have a matching bid"
         );
 
         uint256 fees = existingBid.bidPrice.mul(_feeFraction).div(_feeBase + _feeFraction);
@@ -494,6 +509,13 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
         for (uint256 i = 0; i < _tokenIdWithBid.length(); i++) {
             _cleanInvalidBidsOfToken(_tokenIdWithBid.at(i));
         }
+    }
+
+    /**
+     * @dev See {INFTKEYMarketPlaceV1-erc721Name}.
+     */
+    function erc721Name() external view override returns (string memory) {
+        return _erc721Name;
     }
 
     /**

@@ -16,8 +16,8 @@ export interface TokenBidAccepted {
   name: "TokenBidAccepted";
   args: {
     tokenId: BN;
-    fromAddress: string;
-    toAddress: string;
+    owner: string;
+    bidder: string;
     total: BN;
     value: BN;
     fees: BN;
@@ -384,6 +384,11 @@ export interface INFTKEYMarketPlaceV1Instance extends Truffle.ContractInstance {
   };
 
   /**
+   * Name of ERC721 token
+   */
+  erc721Name(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+  /**
    * Show if listing and bid are enabled
    */
   isListingAndBidEnabled(
@@ -687,6 +692,11 @@ export interface INFTKEYMarketPlaceV1Instance extends Truffle.ContractInstance {
       sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
       estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
     };
+
+    /**
+     * Name of ERC721 token
+     */
+    erc721Name(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
     /**
      * Show if listing and bid are enabled

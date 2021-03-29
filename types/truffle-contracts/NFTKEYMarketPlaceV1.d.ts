@@ -8,6 +8,7 @@ import { EventData, PastEventOptions } from "web3-eth-contract";
 export interface NFTKEYMarketPlaceV1Contract
   extends Truffle.Contract<NFTKEYMarketPlaceV1Instance> {
   "new"(
+    erc721Name_: string,
     _erc721Address: string,
     _paymentTokenAddress: string,
     meta?: Truffle.TransactionDetails
@@ -28,8 +29,8 @@ export interface TokenBidAccepted {
   name: "TokenBidAccepted";
   args: {
     tokenId: BN;
-    fromAddress: string;
-    toAddress: string;
+    owner: string;
+    bidder: string;
     total: BN;
     value: BN;
     fees: BN;
@@ -417,6 +418,11 @@ export interface NFTKEYMarketPlaceV1Instance extends Truffle.ContractInstance {
     sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
     estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
   };
+
+  /**
+   * See {INFTKEYMarketPlaceV1-erc721Name}.
+   */
+  erc721Name(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
   /**
    * See {INFTKEYMarketPlaceV1-isListingAndBidEnabled}.
@@ -837,6 +843,11 @@ export interface NFTKEYMarketPlaceV1Instance extends Truffle.ContractInstance {
       sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
       estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
     };
+
+    /**
+     * See {INFTKEYMarketPlaceV1-erc721Name}.
+     */
+    erc721Name(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
     /**
      * See {INFTKEYMarketPlaceV1-isListingAndBidEnabled}.

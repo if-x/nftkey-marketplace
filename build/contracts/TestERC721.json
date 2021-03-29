@@ -116,7 +116,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -129,7 +130,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -148,7 +150,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -172,7 +175,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -185,7 +189,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -204,7 +209,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -292,7 +298,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -305,7 +312,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -324,7 +332,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -348,7 +357,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -367,7 +377,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -380,7 +391,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -1128,9 +1140,17 @@
     "name": "solc",
     "version": "0.6.12+commit.27d51765.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "56": {
+      "events": {},
+      "links": {},
+      "address": "0x5f60044aa68279fCDFBe1EAbE73Da4B91e30AB76",
+      "transactionHash": "0x95b6ac8a94691da6f20b29c4a7de967187c9562ad1784d383eb492a58f33500a"
+    }
+  },
   "schemaVersion": "3.3.4",
-  "updatedAt": "2021-03-28T02:36:12.194Z",
+  "updatedAt": "2021-03-28T05:32:50.285Z",
+  "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
     "methods": {

@@ -32,8 +32,8 @@ interface INFTKEYMarketPlaceV1 {
     );
     event TokenBidAccepted(
         uint256 indexed tokenId,
-        address indexed fromAddress,
-        address indexed toAddress,
+        address indexed owner,
+        address indexed bidder,
         uint256 total,
         uint256 value,
         uint256 fees
@@ -160,6 +160,11 @@ interface INFTKEYMarketPlaceV1 {
      * @dev Clean all invalid bids
      */
     function cleanAllInvalidBids() external;
+
+    /**
+     * @dev Name of ERC721 token
+     */
+    function erc721Name() external view returns (string memory);
 
     /**
      * @dev Show if listing and bid are enabled
