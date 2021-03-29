@@ -56,6 +56,8 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
     EnumerableSet.UintSet private _tokenIdWithBid;
 
     EnumerableSet.AddressSet private _emptyBidders; // Help initiate TokenBid struct
+    uint256[] private _tempTokenIdStorage; // Storage to assist cleaning
+    address[] private _tempBidderStorage; // Storage to assist cleaning bids
 
     /**
      * @dev only if listing and bid is enabled
@@ -197,23 +199,18 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
     }
 
     /**
-     * @dev See {INFTKEYMarketPlaceV1-getTokenBids}. // TODO length
+     * @dev See {INFTKEYMarketPlaceV1-getTokenBids}.
      */
     function getTokenBids(uint256 tokenId) external view override returns (Bid[] memory) {
         Bid[] memory bids = new Bid[](_tokenBids[tokenId].bidders.length());
-        uint256 bidsCount = 0;
         for (uint256 i; i < _tokenBids[tokenId].bidders.length(); i++) {
             address bidder = _tokenBids[tokenId].bidders.at(i);
             Bid memory bid = _tokenBids[tokenId].bids[bidder];
             if (_isBidValid(bid)) {
-                bids[bidsCount] = bid;
-                bidsCount++;
+                bids[i] = bid;
             }
         }
-
-        Bid[] memory validBids = new Bid[](bidsCount);
-        validBids = bids;
-        return validBids;
+        return bids;
     }
 
     /**
@@ -236,17 +233,10 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
      */
     function getAllTokenHighestBids() external view override returns (Bid[] memory) {
         Bid[] memory allHighestBids = new Bid[](_tokenIdWithBid.length());
-        uint256 bidsCount = 0;
         for (uint256 i; i < _tokenIdWithBid.length(); i++) {
-            Bid memory highestBid = getTokenHighestBid(_tokenIdWithBid.at(i));
-            if (highestBid.bidPrice > 0) {
-                allHighestBids[bidsCount] = highestBid;
-                bidsCount++;
-            }
+            allHighestBids[i] = getTokenHighestBid(_tokenIdWithBid.at(i));
         }
-        Bid[] memory allValidHighestBids = new Bid[](bidsCount);
-        allValidHighestBids = allHighestBids;
-        return allValidHighestBids;
+        return allHighestBids;
     }
 
     /**
@@ -254,17 +244,9 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
      * @param tokenId erc721 token Id
      */
     function _delistToken(uint256 tokenId) private {
-        delete _tokenListings[tokenId];
-        _tokenIdWithListing.remove(tokenId);
-    }
-
-    /**
-     * @dev remove invalid listing of a token
-     * @param tokenId erc721 token Id
-     */
-    function _cleanInvalidListingOfToken(uint256 tokenId) private {
-        if (!_isListingValid(_tokenListings[tokenId])) {
-            _delistToken(tokenId);
+        if (_tokenIdWithListing.contains(tokenId)) {
+            delete _tokenListings[tokenId];
+            _tokenIdWithListing.remove(tokenId);
         }
     }
 
@@ -282,20 +264,6 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
             // Step 2: if no bid left
             if (_tokenBids[tokenId].bidders.length() == 0) {
                 _tokenIdWithBid.remove(tokenId);
-            }
-        }
-    }
-
-    /**
-     * @dev remove invalid bids of a token
-     * @param tokenId erc721 token Id
-     */
-    function _cleanInvalidBidsOfToken(uint256 tokenId) private {
-        for (uint256 i = 0; i < _tokenBids[tokenId].bidders.length(); i++) {
-            address bidder = _tokenBids[tokenId].bidders.at(i);
-            Bid memory bid = _tokenBids[tokenId].bids[bidder];
-            if (!_isBidValid(bid)) {
-                _removeBidOfBidder(tokenId, bidder);
             }
         }
     }
@@ -364,7 +332,7 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
 
         // Remove token listing
         _delistToken(tokenId);
-        _cleanInvalidBidsOfToken(tokenId);
+        _removeBidOfBidder(tokenId, msg.sender);
     }
 
     /**
@@ -450,8 +418,9 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
             fees
         );
 
-        _cleanInvalidListingOfToken(tokenId);
-        _cleanInvalidBidsOfToken(tokenId);
+        // Remove token listing
+        _delistToken(tokenId);
+        _removeBidOfBidder(tokenId, existingBid.bidder);
     }
 
     /**
@@ -498,8 +467,33 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
      */
     function cleanAllInvalidListings() external override {
         for (uint256 i = 0; i < _tokenIdWithListing.length(); i++) {
-            _cleanInvalidListingOfToken(_tokenIdWithListing.at(i));
+            _tempTokenIdStorage.push(_tokenIdWithListing.at(i));
         }
+        for (uint256 i = 0; i < _tempTokenIdStorage.length; i++) {
+            uint256 tokenId = _tempTokenIdStorage[i];
+            if (!_isListingValid(_tokenListings[tokenId])) {
+                _delistToken(tokenId);
+            }
+        }
+        delete _tempTokenIdStorage;
+    }
+
+    /**
+     * @dev remove invalid bids of a token
+     * @param tokenId erc721 token Id
+     */
+    function _cleanInvalidBidsOfToken(uint256 tokenId) private {
+        for (uint256 i = 0; i < _tokenBids[tokenId].bidders.length(); i++) {
+            _tempBidderStorage.push(_tokenBids[tokenId].bidders.at(i));
+        }
+        for (uint256 i = 0; i < _tempBidderStorage.length; i++) {
+            address bidder = _tempBidderStorage[i];
+            Bid memory bid = _tokenBids[tokenId].bids[bidder];
+            if (!_isBidValid(bid)) {
+                _removeBidOfBidder(tokenId, bidder);
+            }
+        }
+        delete _tempBidderStorage;
     }
 
     /**
@@ -507,8 +501,12 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
      */
     function cleanAllInvalidBids() external override {
         for (uint256 i = 0; i < _tokenIdWithBid.length(); i++) {
-            _cleanInvalidBidsOfToken(_tokenIdWithBid.at(i));
+            _tempTokenIdStorage.push(_tokenIdWithBid.at(i));
         }
+        for (uint256 i = 0; i < _tempTokenIdStorage.length; i++) {
+            _cleanInvalidBidsOfToken(_tempTokenIdStorage[i]);
+        }
+        delete _tempTokenIdStorage;
     }
 
     /**

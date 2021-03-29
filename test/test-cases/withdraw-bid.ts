@@ -36,20 +36,16 @@ export const testWithdrawBid = async (accounts: Truffle.Accounts) => {
   });
 
   it("Should remove allowance and make bid invalid", async () => {
-    const bidBefore = await marketplaceInstance.getBidderTokenBid(
-      0,
-      accounts[4]
-    );
-    assert.equal(bidBefore.bidder, accounts[4]);
+    const account = accounts[2];
+
+    const bidBefore = await marketplaceInstance.getBidderTokenBid(0, account);
+    assert.equal(bidBefore.bidder, account);
 
     await paymentToken.approve(marketplaceInstance.address, 0, {
-      from: accounts[4],
+      from: account,
     });
 
-    const bidAfter = await marketplaceInstance.getBidderTokenBid(
-      0,
-      accounts[4]
-    );
-    assert.notEqual(bidAfter.bidder, accounts[4]);
+    const bidAfter = await marketplaceInstance.getBidderTokenBid(0, account);
+    assert.notEqual(bidAfter.bidder, account);
   });
 };

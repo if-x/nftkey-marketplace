@@ -3,6 +3,7 @@ import { testBidToken } from "./test-cases/bid-token";
 import { testBuyToken } from "./test-cases/buy-token";
 import { testDelistToken } from "./test-cases/delist-token";
 import { testListToken } from "./test-cases/list-token";
+import { testTransferToken } from "./test-cases/transfer-token";
 import { testWithdrawBid } from "./test-cases/withdraw-bid";
 
 contract("NFTKEYMarketPlaceV1", (accounts) => {
@@ -23,6 +24,7 @@ contract("NFTKEYMarketPlaceV1", (accounts) => {
 
   // Accept bid
   describe("Accept bid", async () => testAcceptBid(accounts));
-});
 
-// Transfer
+  // Transfer
+  describe("Transfer token", async () => testTransferToken(accounts));
+});

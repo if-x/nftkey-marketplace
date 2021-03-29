@@ -21,10 +21,7 @@ export const testAcceptBid = async (accounts: Truffle.Accounts) => {
   });
 
   it("Should accept bid", async () => {
-    const tokenBids = await marketplaceInstance.getTokenBids(0);
     const highestBid = await marketplaceInstance.getTokenHighestBid(0);
-    console.log("tokenBids", tokenBids);
-    console.log("highestBid", highestBid);
 
     await erc721.setApprovalForAll(marketplaceInstance.address, true, {
       from: accounts[1],
@@ -44,8 +41,9 @@ export const testAcceptBid = async (accounts: Truffle.Accounts) => {
       (log) => log.event === "TokenBidAccepted"
     ) as Truffle.TransactionLog<TokenBidAccepted>;
 
-    console.log("acceptBidLog", acceptBidLog.args);
-
-    // assert.equal(acceptBidLog.args.fromAddress, tokenBid.bidder);
+    assert.equal(
+      web3.utils.fromWei(acceptBidLog.args.total),
+      web3.utils.fromWei(highestBid.bidPrice)
+    );
   });
 };
