@@ -150,19 +150,33 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
     /**
      * @dev See {INFTKEYMarketPlaceV1-getTokenListings}.
      */
-    function getTokenListings() external view override returns (Listing[] memory) {
-        Listing[] memory listings = new Listing[](_tokenIdWithListing.length());
-        uint256 listingCount = 0;
-        for (uint256 i; i < _tokenIdWithListing.length(); i++) {
-            Listing memory listing = _tokenListings[_tokenIdWithListing.at(i)];
-            if (_isListingValid(listing)) {
-                listings[listingCount] = listing;
-                listingCount++;
+    function getTokenListings(uint256 from, uint256 size)
+        public
+        view
+        override
+        returns (Listing[] memory)
+    {
+        if (from < _tokenIdWithListing.length() && size > 0) {
+            uint256 querySize = size;
+            if ((from + size) > _tokenIdWithListing.length()) {
+                querySize = _tokenIdWithListing.length() - from;
             }
+            Listing[] memory listings = new Listing[](querySize);
+            for (uint256 i = 0; i < querySize; i++) {
+                Listing memory listing = _tokenListings[_tokenIdWithListing.at(i + from)];
+                if (_isListingValid(listing)) {
+                    listings[i] = listing;
+                }
+            }
+            return listings;
         }
-        Listing[] memory validListings = new Listing[](listingCount);
-        validListings = listings;
-        return validListings;
+    }
+
+    /**
+     * @dev See {INFTKEYMarketPlaceV1-getAllTokenListings}.
+     */
+    function getAllTokenListings() external view override returns (Listing[] memory) {
+        return getTokenListings(0, _tokenIdWithListing.length());
     }
 
     /**
@@ -229,14 +243,32 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
     }
 
     /**
+     * @dev See {INFTKEYMarketPlaceV1-getTokenHighestBids}.
+     */
+    function getTokenHighestBids(uint256 from, uint256 size)
+        public
+        view
+        override
+        returns (Bid[] memory)
+    {
+        if (from < _tokenIdWithBid.length() && size > 0) {
+            uint256 querySize = size;
+            if ((from + size) > _tokenIdWithBid.length()) {
+                querySize = _tokenIdWithBid.length() - from;
+            }
+            Bid[] memory highestBids = new Bid[](querySize);
+            for (uint256 i = 0; i < querySize; i++) {
+                highestBids[i] = getTokenHighestBid(_tokenIdWithBid.at(i + from));
+            }
+            return highestBids;
+        }
+    }
+
+    /**
      * @dev See {INFTKEYMarketPlaceV1-getAllTokenHighestBids}.
      */
     function getAllTokenHighestBids() external view override returns (Bid[] memory) {
-        Bid[] memory allHighestBids = new Bid[](_tokenIdWithBid.length());
-        for (uint256 i; i < _tokenIdWithBid.length(); i++) {
-            allHighestBids[i] = getTokenHighestBid(_tokenIdWithBid.at(i));
-        }
-        return allHighestBids;
+        return getTokenHighestBids(0, _tokenIdWithBid.length());
     }
 
     /**
@@ -467,13 +499,13 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
      */
     function cleanAllInvalidListings() external override {
         for (uint256 i = 0; i < _tokenIdWithListing.length(); i++) {
-            _tempTokenIdStorage.push(_tokenIdWithListing.at(i));
+            uint256 tokenId = _tokenIdWithListing.at(i);
+            if (!_isListingValid(_tokenListings[tokenId])) {
+                _tempTokenIdStorage.push(tokenId);
+            }
         }
         for (uint256 i = 0; i < _tempTokenIdStorage.length; i++) {
-            uint256 tokenId = _tempTokenIdStorage[i];
-            if (!_isListingValid(_tokenListings[tokenId])) {
-                _delistToken(tokenId);
-            }
+            _delistToken(_tempTokenIdStorage[i]);
         }
         delete _tempTokenIdStorage;
     }
@@ -484,14 +516,15 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
      */
     function _cleanInvalidBidsOfToken(uint256 tokenId) private {
         for (uint256 i = 0; i < _tokenBids[tokenId].bidders.length(); i++) {
-            _tempBidderStorage.push(_tokenBids[tokenId].bidders.at(i));
+            address bidder = _tokenBids[tokenId].bidders.at(i);
+            Bid memory bid = _tokenBids[tokenId].bids[bidder];
+            if (!_isBidValid(bid)) {
+                _tempBidderStorage.push(_tokenBids[tokenId].bidders.at(i));
+            }
         }
         for (uint256 i = 0; i < _tempBidderStorage.length; i++) {
             address bidder = _tempBidderStorage[i];
-            Bid memory bid = _tokenBids[tokenId].bids[bidder];
-            if (!_isBidValid(bid)) {
-                _removeBidOfBidder(tokenId, bidder);
-            }
+            _removeBidOfBidder(tokenId, bidder);
         }
         delete _tempBidderStorage;
     }
@@ -501,7 +534,11 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
      */
     function cleanAllInvalidBids() external override {
         for (uint256 i = 0; i < _tokenIdWithBid.length(); i++) {
-            _tempTokenIdStorage.push(_tokenIdWithBid.at(i));
+            uint256 tokenId = _tokenIdWithBid.at(i);
+            uint256 invalidCount = _getInvalidBidOfTokenCount(tokenId);
+            if (invalidCount > 0) {
+                _tempTokenIdStorage.push(tokenId);
+            }
         }
         for (uint256 i = 0; i < _tempTokenIdStorage.length; i++) {
             _cleanInvalidBidsOfToken(_tempTokenIdStorage[i]);

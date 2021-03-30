@@ -24,7 +24,7 @@ export const testDelistToken = async (accounts: Truffle.Accounts) => {
     assert.equal(Number(delistLog.args.tokenId), 4);
 
     const startTime = Date.now();
-    const listings = await marketplaceInstance.getTokenListings();
+    const listings = await marketplaceInstance.getAllTokenListings();
     const endTime = Date.now();
 
     console.log("Query time", endTime - startTime);

@@ -57,10 +57,19 @@ interface INFTKEYMarketPlaceV1 {
     function getTokenListing(uint256 tokenId) external view returns (Listing memory);
 
     /**
+     * @dev get current valid listings by size
+     * @param from index to start
+     * @param size size to query
+     * @return current valid listings
+     * This to help batch query when list gets big
+     */
+    function getTokenListings(uint256 from, uint256 size) external view returns (Listing[] memory);
+
+    /**
      * @dev get all current valid listings
      * @return current valid listings
      */
-    function getTokenListings() external view returns (Listing[] memory);
+    function getAllTokenListings() external view returns (Listing[] memory);
 
     /**
      * @dev get bidder's bid on a token
@@ -83,6 +92,15 @@ interface INFTKEYMarketPlaceV1 {
      * @return Valid highest bid or empty bid
      */
     function getTokenHighestBid(uint256 tokenId) external view returns (Bid memory);
+
+    /**
+     * @dev get current highest bids
+     * @param from index to start
+     * @param size size to query
+     * @return current highest bids
+     * This to help batch query when list gets big
+     */
+    function getTokenHighestBids(uint256 from, uint256 size) external view returns (Bid[] memory);
 
     /**
      * @dev get all highest bids

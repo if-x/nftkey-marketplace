@@ -33,7 +33,7 @@ export const testTransferToken = async (accounts: Truffle.Accounts) => {
   });
 
   it("Should clean listings", async () => {
-    const allListingBefore = await marketplaceInstance.getTokenListings();
+    const allListingBefore = await marketplaceInstance.getAllTokenListings();
 
     const invalidListingCount = await marketplaceInstance.getInvalidListingCount();
     assert.equal(Number(invalidListingCount), 1);
@@ -43,7 +43,7 @@ export const testTransferToken = async (accounts: Truffle.Accounts) => {
     const invalidListingCountAfter = await marketplaceInstance.getInvalidListingCount();
     assert.equal(Number(invalidListingCountAfter), 0);
 
-    const allListingAfter = await marketplaceInstance.getTokenListings();
+    const allListingAfter = await marketplaceInstance.getAllTokenListings();
     assert.equal(allListingAfter.length, allListingBefore.length - 1);
   });
 

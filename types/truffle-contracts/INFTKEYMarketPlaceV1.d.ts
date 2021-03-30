@@ -128,9 +128,22 @@ export interface INFTKEYMarketPlaceV1Instance extends Truffle.ContractInstance {
   }>;
 
   /**
-   * get all current valid listings
+   * get current valid listings by size
+   * @param from index to start
+   * @param size size to query
    */
   getTokenListings(
+    from: number | BN | string,
+    size: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<
+    { tokenId: BN; listingPrice: BN; seller: string; expireTimestamp: BN }[]
+  >;
+
+  /**
+   * get all current valid listings
+   */
+  getAllTokenListings(
     txDetails?: Truffle.TransactionDetails
   ): Promise<
     { tokenId: BN; listingPrice: BN; seller: string; expireTimestamp: BN }[]
@@ -176,6 +189,19 @@ export interface INFTKEYMarketPlaceV1Instance extends Truffle.ContractInstance {
     bidder: string;
     expireTimestamp: BN;
   }>;
+
+  /**
+   * get current highest bids
+   * @param from index to start
+   * @param size size to query
+   */
+  getTokenHighestBids(
+    from: number | BN | string,
+    size: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<
+    { tokenId: BN; bidPrice: BN; bidder: string; expireTimestamp: BN }[]
+  >;
 
   /**
    * get all highest bids
@@ -438,9 +464,22 @@ export interface INFTKEYMarketPlaceV1Instance extends Truffle.ContractInstance {
     }>;
 
     /**
-     * get all current valid listings
+     * get current valid listings by size
+     * @param from index to start
+     * @param size size to query
      */
     getTokenListings(
+      from: number | BN | string,
+      size: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<
+      { tokenId: BN; listingPrice: BN; seller: string; expireTimestamp: BN }[]
+    >;
+
+    /**
+     * get all current valid listings
+     */
+    getAllTokenListings(
       txDetails?: Truffle.TransactionDetails
     ): Promise<
       { tokenId: BN; listingPrice: BN; seller: string; expireTimestamp: BN }[]
@@ -486,6 +525,19 @@ export interface INFTKEYMarketPlaceV1Instance extends Truffle.ContractInstance {
       bidder: string;
       expireTimestamp: BN;
     }>;
+
+    /**
+     * get current highest bids
+     * @param from index to start
+     * @param size size to query
+     */
+    getTokenHighestBids(
+      from: number | BN | string,
+      size: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<
+      { tokenId: BN; bidPrice: BN; bidder: string; expireTimestamp: BN }[]
+    >;
 
     /**
      * get all highest bids

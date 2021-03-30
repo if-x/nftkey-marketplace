@@ -11,7 +11,7 @@ export const testBuyToken = async (accounts: Truffle.Accounts) => {
   });
 
   it("Should pay coin to buy token", async () => {
-    const allListings = await marketplaceInstance.getTokenListings();
+    const allListings = await marketplaceInstance.getAllTokenListings();
     const tokenToBuy = allListings[0];
     const allTokenBids = await marketplaceInstance.getTokenBids(
       tokenToBuy.tokenId
@@ -51,7 +51,7 @@ export const testBuyToken = async (accounts: Truffle.Accounts) => {
     assert.equal(buyLog.args.fromAddress, tokenToBuy.seller);
     assert.equal(buyLog.args.toAddress, accounts[1]);
 
-    const allListingsAfter = await marketplaceInstance.getTokenListings();
+    const allListingsAfter = await marketplaceInstance.getAllTokenListings();
     assert.equal(allListingsAfter.length, allListings.length - 1);
 
     const allTokenBidsAfter = await marketplaceInstance.getTokenBids(

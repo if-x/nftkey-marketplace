@@ -82,7 +82,7 @@ export const testListToken = async (accounts: Truffle.Accounts) => {
     assert.equal(web3.utils.fromWei(listing.listingPrice), "1");
     assert.equal(Number(listing.tokenId), 0);
 
-    const listings = await marketplaceInstance.getTokenListings();
+    const listings = await marketplaceInstance.getAllTokenListings();
     assert.equal(listings.length, 1);
     assert.equal(listings[0].seller, listing.seller);
   });
@@ -120,7 +120,7 @@ export const testListToken = async (accounts: Truffle.Accounts) => {
     console.log("Listing gas 2", receipts[2].receipt.gasUsed);
 
     const startTime = Date.now();
-    const listings = await marketplaceInstance.getTokenListings();
+    const listings = await marketplaceInstance.getAllTokenListings();
     const endTime = Date.now();
 
     console.log("Query time", endTime - startTime);

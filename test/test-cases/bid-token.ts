@@ -93,7 +93,10 @@ export const testBidToken = async (accounts: Truffle.Accounts) => {
     const bids = await marketplaceInstance.getTokenBids(0);
     assert.equal(bids.length, 5);
 
+    const startTime = Date.now();
     const allHighestBids = await marketplaceInstance.getAllTokenHighestBids();
+    const endTime = Date.now();
     assert.equal(allHighestBids.length, 4);
+    console.log("Query time getAllTokenHighestBids", endTime - startTime);
   });
 };

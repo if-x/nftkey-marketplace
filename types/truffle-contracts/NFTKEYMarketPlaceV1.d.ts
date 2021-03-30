@@ -182,6 +182,17 @@ export interface NFTKEYMarketPlaceV1Instance extends Truffle.ContractInstance {
    * See {INFTKEYMarketPlaceV1-getTokenListings}.
    */
   getTokenListings(
+    from: number | BN | string,
+    size: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<
+    { tokenId: BN; listingPrice: BN; seller: string; expireTimestamp: BN }[]
+  >;
+
+  /**
+   * See {INFTKEYMarketPlaceV1-getAllTokenListings}.
+   */
+  getAllTokenListings(
     txDetails?: Truffle.TransactionDetails
   ): Promise<
     { tokenId: BN; listingPrice: BN; seller: string; expireTimestamp: BN }[]
@@ -223,6 +234,17 @@ export interface NFTKEYMarketPlaceV1Instance extends Truffle.ContractInstance {
     bidder: string;
     expireTimestamp: BN;
   }>;
+
+  /**
+   * See {INFTKEYMarketPlaceV1-getTokenHighestBids}.
+   */
+  getTokenHighestBids(
+    from: number | BN | string,
+    size: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<
+    { tokenId: BN; bidPrice: BN; bidder: string; expireTimestamp: BN }[]
+  >;
 
   /**
    * See {INFTKEYMarketPlaceV1-getAllTokenHighestBids}.
@@ -607,6 +629,17 @@ export interface NFTKEYMarketPlaceV1Instance extends Truffle.ContractInstance {
      * See {INFTKEYMarketPlaceV1-getTokenListings}.
      */
     getTokenListings(
+      from: number | BN | string,
+      size: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<
+      { tokenId: BN; listingPrice: BN; seller: string; expireTimestamp: BN }[]
+    >;
+
+    /**
+     * See {INFTKEYMarketPlaceV1-getAllTokenListings}.
+     */
+    getAllTokenListings(
       txDetails?: Truffle.TransactionDetails
     ): Promise<
       { tokenId: BN; listingPrice: BN; seller: string; expireTimestamp: BN }[]
@@ -648,6 +681,17 @@ export interface NFTKEYMarketPlaceV1Instance extends Truffle.ContractInstance {
       bidder: string;
       expireTimestamp: BN;
     }>;
+
+    /**
+     * See {INFTKEYMarketPlaceV1-getTokenHighestBids}.
+     */
+    getTokenHighestBids(
+      from: number | BN | string,
+      size: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<
+      { tokenId: BN; bidPrice: BN; bidder: string; expireTimestamp: BN }[]
+    >;
 
     /**
      * See {INFTKEYMarketPlaceV1-getAllTokenHighestBids}.
