@@ -10,7 +10,7 @@
   "scripts": {
     "compile": "truffle compile",
     "compile-ts": "tsc -p ./tsconfig.migrate.json --outDir ./migrations",
-    "etherscan-verify": "truffle run verify Life",
+    "etherscan-verify": "truffle run verify NFTKEYMarketPlaceV1",
     "etherscan-verify:bsc": "yarn etherscan-verify --network bsc",
     "etherscan-verify:bsctestnet": "yarn etherscan-verify --network bsctestnet",
     "etherscan-verify:main": "yarn etherscan-verify --network main",
@@ -36,7 +36,7 @@
     "@openzeppelin/contracts": "3.4.1"
   },
   "devDependencies": {
-    "@truffle/hdwallet-provider": "^1.2.5",
+    "@truffle/hdwallet-provider": "1.2.1",
     "@typechain/truffle-v5": "^4.0.1",
     "@types/chai": "^4.2.15",
     "@types/mocha": "^8.2.2",
