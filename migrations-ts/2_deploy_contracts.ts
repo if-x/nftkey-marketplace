@@ -43,7 +43,7 @@ module.exports = async (
     await deployer.deploy(
       NFTKEYMarketPlaceV1,
       "BMoonCats",
-      "0x7A00B19eDc00fa5fB65F32B4D263CE753Df8f651", // BMoonCats
+      "0x7CfAa5ca534afcd3a98509c9b8652ad0C1C2B3d8", // BMoonCats
       "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" // WBNB
     );
     const marketplaceV1 = await NFTKEYMarketPlaceV1.deployed();
