@@ -42,8 +42,8 @@ module.exports = async (
   if (network === "bsc") {
     await deployer.deploy(
       NFTKEYMarketPlaceV1,
-      "BMoonCats",
-      "0x7CfAa5ca534afcd3a98509c9b8652ad0C1C2B3d8", // BMoonCats
+      "BNBBunnies",
+      "0x463BF921D9648Bd7a4b7eE0e21C755Edc538f366", // BNB Bunnies
       "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" // WBNB
     );
     const marketplaceV1 = await NFTKEYMarketPlaceV1.deployed();
