@@ -65,7 +65,7 @@ module.exports = {
         ),
       network_id: 1,
       gas: 6000000,
-      gasPrice: 130000000000,
+      gasPrice: 170000000000,
       confirmations: 2,
       from: fromAddress,
     },
