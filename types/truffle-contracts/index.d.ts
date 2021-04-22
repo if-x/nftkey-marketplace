@@ -12,6 +12,7 @@ import { IERC721ReceiverContract } from "./IERC721Receiver";
 import { INFTKEYMarketPlaceV1Contract } from "./INFTKEYMarketPlaceV1";
 import { MigrationsContract } from "./Migrations";
 import { NFTKEYMarketPlaceContract } from "./NFTKEYMarketPlace";
+import { NFTKEYMarketPlaceV11Contract } from "./NFTKEYMarketPlaceV11";
 import { NFTKEYMarketPlaceV1Contract } from "./NFTKEYMarketPlaceV1";
 import { OwnableContract } from "./Ownable";
 import { TestERC20Contract } from "./TestERC20";
@@ -30,6 +31,7 @@ declare global {
       require(name: "INFTKEYMarketPlaceV1"): INFTKEYMarketPlaceV1Contract;
       require(name: "Migrations"): MigrationsContract;
       require(name: "NFTKEYMarketPlace"): NFTKEYMarketPlaceContract;
+      require(name: "NFTKEYMarketPlaceV1_1"): NFTKEYMarketPlaceV11Contract;
       require(name: "NFTKEYMarketPlaceV1"): NFTKEYMarketPlaceV1Contract;
       require(name: "Ownable"): OwnableContract;
       require(name: "TestERC20"): TestERC20Contract;
@@ -63,6 +65,10 @@ export {
   NFTKEYMarketPlaceContract,
   NFTKEYMarketPlaceInstance,
 } from "./NFTKEYMarketPlace";
+export {
+  NFTKEYMarketPlaceV11Contract,
+  NFTKEYMarketPlaceV11Instance,
+} from "./NFTKEYMarketPlaceV11";
 export {
   NFTKEYMarketPlaceV1Contract,
   NFTKEYMarketPlaceV1Instance,

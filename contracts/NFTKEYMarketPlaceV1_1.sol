@@ -18,7 +18,7 @@ import "./interface/INFTKEYMarketPlaceV1.sol";
  * Note: This marketplace contract is collection based. It serves one ERC721 contract only
  * Payment tokens usually is the chain native coin's wrapped token, e.g. WETH, WBNB
  */
-contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
+contract NFTKEYMarketPlaceV1_1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
     using SafeMath for uint256;
     using Address for address;
     using EnumerableSet for EnumerableSet.UintSet;
@@ -54,6 +54,11 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
 
     mapping(uint256 => TokenBid) private _tokenBids;
     EnumerableSet.UintSet private _tokenIdWithBid;
+
+    address public partnerAddress;
+    uint8 public partnerSharePercentage = 0;
+    bool public hasSharePercentageProposal;
+    uint8 public partnerSharePercentageProposal;
 
     EnumerableSet.AddressSet private _emptyBidders; // Help initiate TokenBid struct
     uint256[] private _tempTokenIdStorage; // Storage to assist cleaning
@@ -363,8 +368,12 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
 
         // Send value to token seller and fees to contract owner
         uint256 valueWithoutFees = msg.value.sub(fees);
+        uint256 partnerFeesShare = fees.mul(partnerSharePercentage).div(100);
         Address.sendValue(payable(listing.seller), valueWithoutFees);
-        Address.sendValue(payable(owner()), fees);
+        Address.sendValue(payable(owner()), fees.sub(partnerFeesShare));
+        if (partnerAddress != address(0) && partnerFeesShare > 0) {
+            Address.sendValue(payable(partnerAddress), partnerFeesShare);
+        }
 
         // Send token to buyer
         emit TokenBought(tokenId, listing.seller, msg.sender, msg.value, valueWithoutFees, fees);
@@ -443,9 +452,23 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
 
         uint256 fees = existingBid.bidPrice.mul(_feeFraction).div(_feeBase + _feeFraction);
         uint256 tokenValue = existingBid.bidPrice.sub(fees);
+        uint256 partnerFeesShare = fees.mul(partnerSharePercentage).div(100);
 
         SafeERC20.safeTransferFrom(_paymentToken, existingBid.bidder, msg.sender, tokenValue);
-        SafeERC20.safeTransferFrom(_paymentToken, existingBid.bidder, owner(), fees);
+        SafeERC20.safeTransferFrom(
+            _paymentToken,
+            existingBid.bidder,
+            owner(),
+            fees.sub(partnerFeesShare)
+        );
+        if (partnerAddress != address(0) && partnerFeesShare > 0) {
+            SafeERC20.safeTransferFrom(
+                _paymentToken,
+                existingBid.bidder,
+                partnerAddress,
+                partnerFeesShare
+            );
+        }
 
         _erc721.safeTransferFrom(msg.sender, existingBid.bidder, tokenId);
 
@@ -624,5 +647,75 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
 
         _feeFraction = feeFraction_;
         _feeBase = feeBase_;
+    }
+
+    /**
+     * @dev Set partner address and profit share
+     * @param _partnerAddress Partner address
+     * @param _partnerSharePercentage Fraction of withdrawal fee base
+     */
+    function setPartnerAddressAndProfitShare(address _partnerAddress, uint8 _partnerSharePercentage)
+        external
+        onlyOwner
+    {
+        require(partnerAddress == address(0), "Owner can't change partner address once it's set");
+        require(_partnerAddress != address(0), "Can't set to address 0x0");
+        require(
+            _partnerSharePercentage > 0 && _partnerSharePercentage <= 100,
+            "Allowed percentage range is 1 to 100"
+        );
+
+        partnerAddress = _partnerAddress;
+        partnerSharePercentage = _partnerSharePercentage;
+    }
+
+    /**
+     * @dev Change partner address
+     * @param _partnerAddress Partner address
+     * Only partner can change their share address
+     */
+    function changePartnerAddress(address _partnerAddress) external {
+        require(msg.sender == partnerAddress, "Only partner can change partner address");
+
+        partnerAddress = _partnerAddress;
+
+        if (_partnerAddress == address(0)) {
+            partnerSharePercentage = 0;
+        }
+    }
+
+    /**
+     * @dev Propose partner share percentage
+     * @param _partnerSharePercentage Partner proposed new share percentage
+     */
+    function proposePartnerShareChange(uint8 _partnerSharePercentage) external {
+        require(msg.sender == partnerAddress, "Only partner can propose share change");
+        require(_partnerSharePercentage <= 100, "Allowed percentage range is 0 to 100");
+        require(
+            _partnerSharePercentage != partnerSharePercentage,
+            "Attempting to set propose same value again"
+        );
+
+        hasSharePercentageProposal = true;
+        partnerSharePercentageProposal = _partnerSharePercentage;
+    }
+
+    /**
+     * @dev Accept partner share percentage proposal
+     */
+    function acceptPartnerShareChange() external onlyOwner {
+        require(hasSharePercentageProposal, "There is no change share proposal");
+        partnerSharePercentage = partnerSharePercentageProposal;
+        hasSharePercentageProposal = false;
+        partnerSharePercentageProposal = 0;
+    }
+
+    /**
+     * @dev Reject partner share percentage proposal
+     */
+    function rejectPartnerShareChange() external onlyOwner {
+        require(hasSharePercentageProposal, "There is no change share proposal");
+        hasSharePercentageProposal = false;
+        partnerSharePercentageProposal = 0;
     }
 }

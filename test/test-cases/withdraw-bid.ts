@@ -1,14 +1,14 @@
 import {
-  NFTKEYMarketPlaceV1Instance,
+  NFTKEYMarketPlaceV11Instance,
   TestERC20Instance,
 } from "../../types/truffle-contracts";
 
 const TestERC20 = artifacts.require("TestERC20");
-const NFTKEYMarketPlaceV1 = artifacts.require("NFTKEYMarketPlaceV1");
+const NFTKEYMarketPlaceV1 = artifacts.require("NFTKEYMarketPlaceV1_1");
 
 export const testWithdrawBid = async (accounts: Truffle.Accounts) => {
   let paymentToken: TestERC20Instance;
-  let marketplaceInstance: NFTKEYMarketPlaceV1Instance;
+  let marketplaceInstance: NFTKEYMarketPlaceV11Instance;
 
   before(async () => {
     paymentToken = await TestERC20.deployed();

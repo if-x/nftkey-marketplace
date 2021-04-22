@@ -1,10 +1,10 @@
-import { NFTKEYMarketPlaceV1Instance } from "../../types/truffle-contracts";
+import { NFTKEYMarketPlaceV11Instance } from "../../types/truffle-contracts";
 import { TokenBought } from "../../types/truffle-contracts/INFTKEYMarketPlaceV1";
 
-const NFTKEYMarketPlaceV1 = artifacts.require("NFTKEYMarketPlaceV1");
+const NFTKEYMarketPlaceV1 = artifacts.require("NFTKEYMarketPlaceV1_1");
 
 export const testBuyToken = async (accounts: Truffle.Accounts) => {
-  let marketplaceInstance: NFTKEYMarketPlaceV1Instance;
+  let marketplaceInstance: NFTKEYMarketPlaceV11Instance;
 
   before(async () => {
     marketplaceInstance = await NFTKEYMarketPlaceV1.deployed();

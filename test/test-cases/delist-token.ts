@@ -1,11 +1,11 @@
-import { NFTKEYMarketPlaceV1Instance } from "../../types/truffle-contracts";
+import { NFTKEYMarketPlaceV11Instance } from "../../types/truffle-contracts";
 import { TokenDelisted } from "../../types/truffle-contracts/INFTKEYMarketPlaceV1";
 import { assertRevert } from "../test-utils/assertions";
 
-const NFTKEYMarketPlaceV1 = artifacts.require("NFTKEYMarketPlaceV1");
+const NFTKEYMarketPlaceV1 = artifacts.require("NFTKEYMarketPlaceV1_1");
 
 export const testDelistToken = async (accounts: Truffle.Accounts) => {
-  let marketplaceInstance: NFTKEYMarketPlaceV1Instance;
+  let marketplaceInstance: NFTKEYMarketPlaceV11Instance;
 
   before(async () => {
     marketplaceInstance = await NFTKEYMarketPlaceV1.deployed();

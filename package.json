@@ -10,7 +10,7 @@
   "scripts": {
     "compile": "truffle compile",
     "compile-ts": "tsc -p ./tsconfig.migrate.json --outDir ./migrations",
-    "etherscan-verify": "truffle run verify NFTKEYMarketPlaceV1",
+    "etherscan-verify": "truffle run verify NFTKEYMarketPlaceV1_1",
     "etherscan-verify:bsc": "yarn etherscan-verify --network bsc",
     "etherscan-verify:bsctestnet": "yarn etherscan-verify --network bsctestnet",
     "etherscan-verify:main": "yarn etherscan-verify --network main",
