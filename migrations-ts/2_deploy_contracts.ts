@@ -55,14 +55,14 @@ module.exports = async (
   if (network === "bsc") {
     await deployer.deploy(
       NFTKEYMarketPlaceV1_1,
-      "Non Fungible Apes",
-      "0x6eca7754007d22d3f557740d06fed4a031befe1e", // Non Fungible Apes
+      "Waifusion",
+      "0x2216d47494E516d8206B70FCa8585820eD3C4946", // Waifusion
       "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" // WBNB
     );
     const marketplaceV1 = await NFTKEYMarketPlaceV1_1.deployed();
 
     console.log(
-      `NFTKEYMarketPlaceV1_1 for Non Fungible Apes deployed at ${marketplaceV1.address} in network: ${network}.`
+      `NFTKEYMarketPlaceV1_1 for Waifusion deployed at ${marketplaceV1.address} in network: ${network}.`
     );
   }
 
