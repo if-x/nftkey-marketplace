@@ -31,11 +31,11 @@ module.exports = async (deployer, network
         // );
     }
     if (network === "bsc") {
-        await deployer.deploy(NFTKEYMarketPlaceV1_1, "Waifusion", "0x2216d47494E516d8206B70FCa8585820eD3C4946", // Waifusion
+        await deployer.deploy(NFTKEYMarketPlaceV1_1, "NeuralPepe", "0x3c78B3066868C636c584a13Ec0a15b82e1E9511d", // NeuralPepe
         "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" // WBNB
         );
         const marketplaceV1 = await NFTKEYMarketPlaceV1_1.deployed();
-        console.log(`NFTKEYMarketPlaceV1_1 for Waifusion deployed at ${marketplaceV1.address} in network: ${network}.`);
+        console.log(`NFTKEYMarketPlaceV1_1 for NeuralPepe deployed at ${marketplaceV1.address} in network: ${network}.`);
     }
     if (network === "ropsten") {
         // await deployer.deploy(

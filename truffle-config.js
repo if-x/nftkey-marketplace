@@ -43,6 +43,7 @@ module.exports = {
         new HDWalletProvider(mnemonic, `https://bsc-dataseed.binance.org/`),
       network_id: 56,
       // gas: 5500000,
+      gasPrice: 5000000000,
       confirmations: 2,
       from: fromAddress,
     },
