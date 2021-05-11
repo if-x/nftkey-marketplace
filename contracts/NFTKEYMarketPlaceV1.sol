@@ -198,6 +198,7 @@ contract NFTKEYMarketPlaceV1 is INFTKEYMarketPlaceV1, Ownable, ReentrancyGuard {
         if (
             !_isTokenOwner(bid.tokenId, bid.bidder) &&
             _paymentToken.allowance(bid.bidder, address(this)) >= bid.bidPrice &&
+            _paymentToken.balanceOf(bid.bidder) >= bid.bidPrice &&
             bid.bidPrice > 0 &&
             bid.expireTimestamp > block.timestamp
         ) {

@@ -3,10 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const TestERC20 = artifacts.require("TestERC20");
 const TestERC721 = artifacts.require("TestERC721");
 const NFTKEYMarketPlaceV1_1 = artifacts.require("NFTKEYMarketPlaceV1_1");
+const MarketPlaceReader = artifacts.require("MarketPlaceReader");
 module.exports = async (deployer, network
 // accounts: string[]
 ) => {
     console.log(network);
+    await deployer.deploy(MarketPlaceReader);
+    const marketPlaceReader = await MarketPlaceReader.deployed();
+    console.log(`MarketPlaceReader deployed at ${marketPlaceReader.address} in network: ${network}.`);
     if (network === "development") {
         await deployer.deploy(TestERC721);
         const erc721 = await TestERC721.deployed();
@@ -31,11 +35,16 @@ module.exports = async (deployer, network
         // );
     }
     if (network === "bsc") {
-        await deployer.deploy(NFTKEYMarketPlaceV1_1, "NeuralPepe", "0x3c78B3066868C636c584a13Ec0a15b82e1E9511d", // NeuralPepe
-        "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" // WBNB
-        );
-        const marketplaceV1 = await NFTKEYMarketPlaceV1_1.deployed();
-        console.log(`NFTKEYMarketPlaceV1_1 for NeuralPepe deployed at ${marketplaceV1.address} in network: ${network}.`);
+        // await deployer.deploy(
+        //   NFTKEYMarketPlaceV1_1,
+        //   "NeuralPepe",
+        //   "0x3c78B3066868C636c584a13Ec0a15b82e1E9511d", // NeuralPepe
+        //   "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" // WBNB
+        // );
+        // const marketplaceV1 = await NFTKEYMarketPlaceV1_1.deployed();
+        // console.log(
+        //   `NFTKEYMarketPlaceV1_1 for NeuralPepe deployed at ${marketplaceV1.address} in network: ${network}.`
+        // );
     }
     if (network === "ropsten") {
         // await deployer.deploy(
@@ -52,13 +61,13 @@ module.exports = async (deployer, network
     if (network === "main") {
         // await deployer.deploy(
         //   NFTKEYMarketPlaceV1_1,
-        //   "Pixls",
-        //   "0x082903f4e94c5e10A2B116a4284940a36AFAEd63", // Pixls
+        //   "Unisocks",
+        //   "0x65770b5283117639760beA3F867b69b3697a91dd", // Unisocks
         //   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" // WETH
         // );
         // const marketplaceV1 = await NFTKEYMarketPlaceV1_1.deployed();
         // console.log(
-        //   `NFTKEYMarketPlaceV1_1 for Pixls deployed at ${marketplaceV1.address} in network: ${network}.`
+        //   `NFTKEYMarketPlaceV1_1 for Unisocks deployed at ${marketplaceV1.address} in network: ${network}.`
         // );
     }
 };

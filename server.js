@@ -6,7 +6,8 @@ const mnemonic = process.env.MNEUMONIC;
 const infuraKey = process.env.INFURA_PROJECT_ID;
 
 const server = ganache.server({
-  fork: `https://mainnet.infura.io/v3/${infuraKey}`,
+  // fork: `https://mainnet.infura.io/v3/${infuraKey}`,
+  fork: "https://bsc-dataseed.binance.org/",
   mnemonic,
   ws: false,
 });
