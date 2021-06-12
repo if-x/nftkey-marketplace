@@ -44,6 +44,15 @@ export interface MarketPlaceReaderInstance extends Truffle.ContractInstance {
     expireTimestamp: BN;
   }>;
 
+  getTokenHighestBids(
+    marketplace: string,
+    from: number | BN | string,
+    size: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<
+    { tokenId: BN; bidPrice: BN; bidder: string; expireTimestamp: BN }[]
+  >;
+
   getAllTokenHighestBids(
     marketplace: string,
     txDetails?: Truffle.TransactionDetails
@@ -90,6 +99,15 @@ export interface MarketPlaceReaderInstance extends Truffle.ContractInstance {
       bidder: string;
       expireTimestamp: BN;
     }>;
+
+    getTokenHighestBids(
+      marketplace: string,
+      from: number | BN | string,
+      size: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<
+      { tokenId: BN; bidPrice: BN; bidder: string; expireTimestamp: BN }[]
+    >;
 
     getAllTokenHighestBids(
       marketplace: string,

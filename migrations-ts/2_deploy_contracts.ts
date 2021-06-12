@@ -63,13 +63,13 @@ module.exports = async (
   if (network === "bsc") {
     // await deployer.deploy(
     //   NFTKEYMarketPlaceV1_1,
-    //   "NeuralPepe",
-    //   "0x3c78B3066868C636c584a13Ec0a15b82e1E9511d", // NeuralPepe
+    //   "ApeStrong Covid Relief",
+    //   "0x77A88d5Ae4239e0b1A2A748F630d4b37ad35d038", // ApeStrong
     //   "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" // WBNB
     // );
     // const marketplaceV1 = await NFTKEYMarketPlaceV1_1.deployed();
     // console.log(
-    //   `NFTKEYMarketPlaceV1_1 for NeuralPepe deployed at ${marketplaceV1.address} in network: ${network}.`
+    //   `NFTKEYMarketPlaceV1_1 for ApeStrong Covid Relief deployed at ${marketplaceV1.address} in network: ${network}.`
     // );
   }
 

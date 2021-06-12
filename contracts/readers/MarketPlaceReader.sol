@@ -91,6 +91,21 @@ contract MarketPlaceReader {
         return highestBid;
     }
 
+    function getTokenHighestBids(
+        address marketplace,
+        uint256 from,
+        uint256 size
+    ) external view returns (INFTKEYMarketPlaceV1.Bid[] memory) {
+        INFTKEYMarketPlaceV1.Bid[] memory highestBids =
+            INFTKEYMarketPlaceV1(marketplace).getTokenHighestBids(from, size);
+
+        for (uint256 i; i < highestBids.length; i++) {
+            highestBids[i] = getTokenHighestBid(marketplace, highestBids[i].tokenId);
+        }
+
+        return highestBids;
+    }
+
     function getAllTokenHighestBids(address marketplace)
         external
         view
