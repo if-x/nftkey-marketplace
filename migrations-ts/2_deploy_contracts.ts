@@ -12,12 +12,12 @@ module.exports = async (
 ) => {
   console.log(network);
 
-  await deployer.deploy(MarketPlaceReader);
-  const marketPlaceReader = await MarketPlaceReader.deployed();
+  // await deployer.deploy(MarketPlaceReader);
+  // const marketPlaceReader = await MarketPlaceReader.deployed();
 
-  console.log(
-    `MarketPlaceReader deployed at ${marketPlaceReader.address} in network: ${network}.`
-  );
+  // console.log(
+  //   `MarketPlaceReader deployed at ${marketPlaceReader.address} in network: ${network}.`
+  // );
 
   if (network === "development") {
     await deployer.deploy(TestERC721);
@@ -74,29 +74,29 @@ module.exports = async (
   }
 
   if (network === "ropsten") {
-    // await deployer.deploy(
-    //   NFTKEYMarketPlaceV1_1,
-    //   "Life",
-    //   "0x32d8021324af928F864C23b7912C8c3F11cC4Cdc", // Life Ropsten
-    //   "0xc778417E063141139Fce010982780140Aa0cD5Ab" // WETH Ropsten
-    // );
-    // const marketplaceV1 = await NFTKEYMarketPlaceV1_1.deployed();
-    // console.log(
-    //   `NFTKEYMarketPlaceV1_1 for Life deployed at ${marketplaceV1.address} in network: ${network}.`
-    // );
+    await deployer.deploy(
+      NFTKEYMarketPlaceV1_1,
+      "Spunks",
+      "0xca7707c8478A1C0dF8De48F38217Acd6D1Ea5202", // Spunks Ropsten
+      "0xc778417E063141139Fce010982780140Aa0cD5Ab" // WETH Ropsten
+    );
+    const marketplaceV1 = await NFTKEYMarketPlaceV1_1.deployed();
+    console.log(
+      `NFTKEYMarketPlaceV1_1 for Spunks deployed at ${marketplaceV1.address} in network: ${network}.`
+    );
   }
 
   if (network === "main") {
-    // await deployer.deploy(
-    //   NFTKEYMarketPlaceV1_1,
-    //   "Unisocks",
-    //   "0x65770b5283117639760beA3F867b69b3697a91dd", // Unisocks
-    //   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" // WETH
-    // );
-    // const marketplaceV1 = await NFTKEYMarketPlaceV1_1.deployed();
-    // console.log(
-    //   `NFTKEYMarketPlaceV1_1 for Unisocks deployed at ${marketplaceV1.address} in network: ${network}.`
-    // );
+    await deployer.deploy(
+      NFTKEYMarketPlaceV1_1,
+      "Spunks",
+      "0x9a604220d37b69c09eFfCcd2E8475740773E3DaF", // Spunks
+      "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" // WETH
+    );
+    const marketplaceV1 = await NFTKEYMarketPlaceV1_1.deployed();
+    console.log(
+      `NFTKEYMarketPlaceV1_1 for Spunks deployed at ${marketplaceV1.address} in network: ${network}.`
+    );
   }
 };
 
