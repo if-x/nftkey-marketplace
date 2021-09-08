@@ -64,8 +64,9 @@ contract MarketPlaceReader {
         view
         returns (INFTKEYMarketPlaceV1.Bid[] memory)
     {
-        INFTKEYMarketPlaceV1.Bid[] memory bids =
-            INFTKEYMarketPlaceV1(marketplace).getTokenBids(tokenId);
+        INFTKEYMarketPlaceV1.Bid[] memory bids = INFTKEYMarketPlaceV1(marketplace).getTokenBids(
+            tokenId
+        );
         for (uint256 i; i < bids.length; i++) {
             if (!_isBidValid(marketplace, bids[i])) {
                 bids[i] = INFTKEYMarketPlaceV1.Bid(tokenId, 0, address(0), 0);
@@ -79,8 +80,12 @@ contract MarketPlaceReader {
         view
         returns (INFTKEYMarketPlaceV1.Bid memory)
     {
-        INFTKEYMarketPlaceV1.Bid memory highestBid =
-            INFTKEYMarketPlaceV1.Bid(tokenId, 0, address(0), 0);
+        INFTKEYMarketPlaceV1.Bid memory highestBid = INFTKEYMarketPlaceV1.Bid(
+            tokenId,
+            0,
+            address(0),
+            0
+        );
         INFTKEYMarketPlaceV1.Bid[] memory bids = getTokenBids(marketplace, tokenId);
 
         for (uint256 i; i < bids.length; i++) {
@@ -96,8 +101,8 @@ contract MarketPlaceReader {
         uint256 from,
         uint256 size
     ) external view returns (INFTKEYMarketPlaceV1.Bid[] memory) {
-        INFTKEYMarketPlaceV1.Bid[] memory highestBids =
-            INFTKEYMarketPlaceV1(marketplace).getTokenHighestBids(from, size);
+        INFTKEYMarketPlaceV1.Bid[] memory highestBids = INFTKEYMarketPlaceV1(marketplace)
+        .getTokenHighestBids(from, size);
 
         for (uint256 i; i < highestBids.length; i++) {
             highestBids[i] = getTokenHighestBid(marketplace, highestBids[i].tokenId);
@@ -111,8 +116,8 @@ contract MarketPlaceReader {
         view
         returns (INFTKEYMarketPlaceV1.Bid[] memory)
     {
-        INFTKEYMarketPlaceV1.Bid[] memory allHighestBids =
-            INFTKEYMarketPlaceV1(marketplace).getAllTokenHighestBids();
+        INFTKEYMarketPlaceV1.Bid[] memory allHighestBids = INFTKEYMarketPlaceV1(marketplace)
+        .getAllTokenHighestBids();
 
         for (uint256 i; i < allHighestBids.length; i++) {
             allHighestBids[i] = getTokenHighestBid(marketplace, allHighestBids[i].tokenId);
@@ -121,18 +126,19 @@ contract MarketPlaceReader {
         return allHighestBids;
     }
 
-    function getBidderBids(address marketplace, address bidder)
-        public
-        view
-        returns (INFTKEYMarketPlaceV1.Bid[] memory)
-    {
-        INFTKEYMarketPlaceV1.Bid[] memory allBids =
-            INFTKEYMarketPlaceV1(marketplace).getAllTokenHighestBids();
+    function getBidderBids(
+        address marketplace,
+        address bidder,
+        uint256 from,
+        uint256 size
+    ) public view returns (INFTKEYMarketPlaceV1.Bid[] memory) {
+        INFTKEYMarketPlaceV1.Bid[] memory highestBids = INFTKEYMarketPlaceV1(marketplace)
+        .getTokenHighestBids(from, size);
 
-        for (uint256 i; i < allBids.length; i++) {
-            allBids[i] = getBidderTokenBid(marketplace, allBids[i].tokenId, bidder);
+        for (uint256 i; i < highestBids.length; i++) {
+            highestBids[i] = getBidderTokenBid(marketplace, highestBids[i].tokenId, bidder);
         }
 
-        return allBids;
+        return highestBids;
     }
 }

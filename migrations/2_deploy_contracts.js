@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const TestERC20 = artifacts.require("TestERC20");
 const TestERC721 = artifacts.require("TestERC721");
 const NFTKEYMarketPlaceV1_1 = artifacts.require("NFTKEYMarketPlaceV1_1");
-const MarketPlaceReader = artifacts.require("MarketPlaceReader");
 module.exports = async (deployer, network
 // accounts: string[]
 ) => {
@@ -37,29 +36,34 @@ module.exports = async (deployer, network
         // );
     }
     if (network === "bsc") {
+        await deployer.deploy(NFTKEYMarketPlaceV1_1, "NFCs", "0x69799454f8c742690E20a34B953521fdA013159E", // Non-Fungible Cowboys
+        "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" // WBNB
+        );
+        const marketplaceV1 = await NFTKEYMarketPlaceV1_1.deployed();
+        console.log(`NFTKEYMarketPlaceV1_1 for Non-Fungible Cowboys deployed at ${marketplaceV1.address} in network: ${network}.`);
+    }
+    if (network === "ropsten") {
         // await deployer.deploy(
         //   NFTKEYMarketPlaceV1_1,
-        //   "ApeStrong Covid Relief",
-        //   "0x77A88d5Ae4239e0b1A2A748F630d4b37ad35d038", // ApeStrong
-        //   "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" // WBNB
+        //   "Spunks",
+        //   "0xca7707c8478A1C0dF8De48F38217Acd6D1Ea5202", // Spunks Ropsten
+        //   "0xc778417E063141139Fce010982780140Aa0cD5Ab" // WETH Ropsten
         // );
         // const marketplaceV1 = await NFTKEYMarketPlaceV1_1.deployed();
         // console.log(
-        //   `NFTKEYMarketPlaceV1_1 for ApeStrong Covid Relief deployed at ${marketplaceV1.address} in network: ${network}.`
+        //   `NFTKEYMarketPlaceV1_1 for Spunks deployed at ${marketplaceV1.address} in network: ${network}.`
         // );
     }
-    if (network === "ropsten") {
-        await deployer.deploy(NFTKEYMarketPlaceV1_1, "Spunks", "0xca7707c8478A1C0dF8De48F38217Acd6D1Ea5202", // Spunks Ropsten
-        "0xc778417E063141139Fce010982780140Aa0cD5Ab" // WETH Ropsten
-        );
-        const marketplaceV1 = await NFTKEYMarketPlaceV1_1.deployed();
-        console.log(`NFTKEYMarketPlaceV1_1 for Spunks deployed at ${marketplaceV1.address} in network: ${network}.`);
-    }
     if (network === "main") {
-        await deployer.deploy(NFTKEYMarketPlaceV1_1, "Spunks", "0x9a604220d37b69c09eFfCcd2E8475740773E3DaF", // Spunks
-        "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" // WETH
-        );
-        const marketplaceV1 = await NFTKEYMarketPlaceV1_1.deployed();
-        console.log(`NFTKEYMarketPlaceV1_1 for Spunks deployed at ${marketplaceV1.address} in network: ${network}.`);
+        // await deployer.deploy(
+        //   NFTKEYMarketPlaceV1_1,
+        //   "Spunks",
+        //   "0x9a604220d37b69c09eFfCcd2E8475740773E3DaF", // Spunks
+        //   "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" // WETH
+        // );
+        // const marketplaceV1 = await NFTKEYMarketPlaceV1_1.deployed();
+        // console.log(
+        //   `NFTKEYMarketPlaceV1_1 for Spunks deployed at ${marketplaceV1.address} in network: ${network}.`
+        // );
     }
 };

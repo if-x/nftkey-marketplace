@@ -179,6 +179,14 @@ export interface IERC721MetadataInstance extends Truffle.ContractInstance {
    */
   symbol(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
+  /**
+   * Returns the Uniform Resource Identifier (URI) for `tokenId` token.
+   */
+  tokenURI(
+    tokenId: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<string>;
+
   methods: {
     /**
      * Gives permission to `to` to transfer `tokenId` token to another account. The approval is cleared when the token is transferred. Only a single account can be approved at a time, so approving the zero address clears previous approvals. Requirements: - The caller must own the token or be an approved operator. - `tokenId` must exist. Emits an {Approval} event.
@@ -312,6 +320,14 @@ export interface IERC721MetadataInstance extends Truffle.ContractInstance {
      * Returns the token collection symbol.
      */
     symbol(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+    /**
+     * Returns the Uniform Resource Identifier (URI) for `tokenId` token.
+     */
+    tokenURI(
+      tokenId: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
 
     /**
      * Safely transfers `tokenId` token from `from` to `to`, checking first that contract recipients are aware of the ERC721 protocol to prevent tokens from being forever locked. Requirements: - `from` cannot be the zero address. - `to` cannot be the zero address. - `tokenId` token must exist and be owned by `from`. - If the caller is not `from`, it must be have been allowed to move this token by either {approve} or {setApprovalForAll}. - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon a safe transfer. Emits a {Transfer} event.

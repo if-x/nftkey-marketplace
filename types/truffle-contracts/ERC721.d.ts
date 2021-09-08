@@ -84,6 +84,19 @@ export interface ERC721Instance extends Truffle.ContractInstance {
   symbol(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
   /**
+   * See {IERC721Metadata-tokenURI}.
+   */
+  tokenURI(
+    tokenId: number | BN | string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<string>;
+
+  /**
+   * Returns the base URI set via {_setBaseURI}. This will be automatically added as a prefix in {tokenURI} to each token's URI, or to the token ID if no specific URI is set for that token ID.
+   */
+  baseURI(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+  /**
    * See {IERC721Enumerable-tokenOfOwnerByIndex}.
    */
   tokenOfOwnerByIndex(
@@ -238,6 +251,19 @@ export interface ERC721Instance extends Truffle.ContractInstance {
      * See {IERC721Metadata-symbol}.
      */
     symbol(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+    /**
+     * See {IERC721Metadata-tokenURI}.
+     */
+    tokenURI(
+      tokenId: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+
+    /**
+     * Returns the base URI set via {_setBaseURI}. This will be automatically added as a prefix in {tokenURI} to each token's URI, or to the token ID if no specific URI is set for that token ID.
+     */
+    baseURI(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
     /**
      * See {IERC721Enumerable-tokenOfOwnerByIndex}.

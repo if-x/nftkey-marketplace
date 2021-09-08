@@ -63,6 +63,8 @@ export interface MarketPlaceReaderInstance extends Truffle.ContractInstance {
   getBidderBids(
     marketplace: string,
     bidder: string,
+    from: number | BN | string,
+    size: number | BN | string,
     txDetails?: Truffle.TransactionDetails
   ): Promise<
     { tokenId: BN; bidPrice: BN; bidder: string; expireTimestamp: BN }[]
@@ -119,6 +121,8 @@ export interface MarketPlaceReaderInstance extends Truffle.ContractInstance {
     getBidderBids(
       marketplace: string,
       bidder: string,
+      from: number | BN | string,
+      size: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<
       { tokenId: BN; bidPrice: BN; bidder: string; expireTimestamp: BN }[]

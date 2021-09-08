@@ -4,9 +4,10 @@
 
 import { BMoonCatsReaderContract } from "./BMoonCatsReader";
 import { ERC165Contract } from "./ERC165";
+import { ERC20Contract } from "./ERC20";
 import { ERC721Contract } from "./ERC721";
-import { IBMoonCatsContract } from "./IBMoonCats";
 import { IERC165Contract } from "./IERC165";
+import { IERC20Contract } from "./IERC20";
 import { IERC721Contract } from "./IERC721";
 import { IERC721EnumerableContract } from "./IERC721Enumerable";
 import { IERC721MetadataContract } from "./IERC721Metadata";
@@ -15,7 +16,6 @@ import { INFTKEYMarketPlaceV1Contract } from "./INFTKEYMarketPlaceV1";
 import { MarketPlaceReaderContract } from "./MarketPlaceReader";
 import { MigrationsContract } from "./Migrations";
 import { MoonCatRescueContract } from "./MoonCatRescue";
-import { NFTKEYMarketPlaceContract } from "./NFTKEYMarketPlace";
 import { NFTKEYMarketPlaceV11Contract } from "./NFTKEYMarketPlaceV11";
 import { NFTKEYMarketPlaceV1Contract } from "./NFTKEYMarketPlaceV1";
 import { OwnableContract } from "./Ownable";
@@ -27,9 +27,10 @@ declare global {
     interface Artifacts {
       require(name: "BMoonCatsReader"): BMoonCatsReaderContract;
       require(name: "ERC165"): ERC165Contract;
+      require(name: "ERC20"): ERC20Contract;
       require(name: "ERC721"): ERC721Contract;
-      require(name: "IBMoonCats"): IBMoonCatsContract;
       require(name: "IERC165"): IERC165Contract;
+      require(name: "IERC20"): IERC20Contract;
       require(name: "IERC721"): IERC721Contract;
       require(name: "IERC721Enumerable"): IERC721EnumerableContract;
       require(name: "IERC721Metadata"): IERC721MetadataContract;
@@ -38,7 +39,6 @@ declare global {
       require(name: "MarketPlaceReader"): MarketPlaceReaderContract;
       require(name: "Migrations"): MigrationsContract;
       require(name: "MoonCatRescue"): MoonCatRescueContract;
-      require(name: "NFTKEYMarketPlace"): NFTKEYMarketPlaceContract;
       require(name: "NFTKEYMarketPlaceV1_1"): NFTKEYMarketPlaceV11Contract;
       require(name: "NFTKEYMarketPlaceV1"): NFTKEYMarketPlaceV1Contract;
       require(name: "Ownable"): OwnableContract;
@@ -53,9 +53,10 @@ export {
   BMoonCatsReaderInstance,
 } from "./BMoonCatsReader";
 export { ERC165Contract, ERC165Instance } from "./ERC165";
+export { ERC20Contract, ERC20Instance } from "./ERC20";
 export { ERC721Contract, ERC721Instance } from "./ERC721";
-export { IBMoonCatsContract, IBMoonCatsInstance } from "./IBMoonCats";
 export { IERC165Contract, IERC165Instance } from "./IERC165";
+export { IERC20Contract, IERC20Instance } from "./IERC20";
 export { IERC721Contract, IERC721Instance } from "./IERC721";
 export {
   IERC721EnumerableContract,
@@ -79,10 +80,6 @@ export {
 } from "./MarketPlaceReader";
 export { MigrationsContract, MigrationsInstance } from "./Migrations";
 export { MoonCatRescueContract, MoonCatRescueInstance } from "./MoonCatRescue";
-export {
-  NFTKEYMarketPlaceContract,
-  NFTKEYMarketPlaceInstance,
-} from "./NFTKEYMarketPlace";
 export {
   NFTKEYMarketPlaceV11Contract,
   NFTKEYMarketPlaceV11Instance,
